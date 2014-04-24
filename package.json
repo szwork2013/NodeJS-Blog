@@ -19,6 +19,8 @@
     "express-session": "*",
     "connect": "*",
     "connect-flash": "*",
-    "markdown":"*"
+    "markdown":"*",
+    "connect-multiparty":"*"
+
   }
 }

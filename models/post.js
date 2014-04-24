@@ -52,7 +52,7 @@ Post.prototype.save = function(callback) {
     });
 };
 
-Post.get = function(username, callback) {
+Post.getAll = function(username, callback) {
     // Open db
     mongodb.open(function(err, db) {
         if (err) {
@@ -87,3 +87,5 @@ Post.get = function(username, callback) {
         });
     });
 }
+
+
