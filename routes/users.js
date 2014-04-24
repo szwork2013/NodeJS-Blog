@@ -8,13 +8,15 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/:username', function(req, res) {
+    var page = req.query.p ? parseInt(req.query.p) : 1;
+
     User.get(req.params.username, function(err, user) {
         if (!user) {
             req.flash('error', 'User not exist');
             return res.redirect('/');
         }
 
-        Post.getAll(user.username, function(err, posts) {
+        Post.getTen(user.username, page, function(err, posts, total) {
             if (err) {
                 req.flash('error', err);
                 return res.redirect('/');
@@ -23,6 +25,9 @@ router.get('/:username', function(req, res) {
             res.render('user', {
                 title: user.username,
                 posts: posts,
+                page: page,
+                isFirstPage: (page - 1) == 0,
+                isLastPage: ((page - 1) * 10 + posts.length) == total,
                 user: req.session.user,
                 success: req.flash('success').toString(),
                 error: req.flash('error').toString()

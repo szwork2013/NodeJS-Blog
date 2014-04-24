@@ -12,15 +12,19 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    Post.getAll(null, function(err, posts) {
+    var page = req.query.p ? parseInt(req.query.p) : 1;
+    Post.getTen(null, page, function(err, posts, total) {
         if (err) {
             posts = [];
         }
 
         res.render('index', {
             title: 'Home',
-            user: req.session.user,
+            page: page,
             posts: posts,
+            isFirstPage: (page - 1) == 0,
+            isLastPage: (page - 1) * 10 + posts.length == total,
+            user: req.session.user,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
         });

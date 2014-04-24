@@ -54,7 +54,7 @@ Post.prototype.save = function(callback) {
     });
 };
 
-Post.getAll = function(username, callback) {
+Post.getTen = function(username, page, callback) {
     // Open db
     mongodb.open(function(err, db) {
         if (err) {
@@ -72,20 +72,30 @@ Post.getAll = function(username, callback) {
                 query.username = username;
             }
 
-            collection.find(query).sort({
-                time:-1
-            }).toArray(function(err, docs) {
-                    mongodb.close();
-                    if (err) {
-                        return callback(err);  // fail
-                    }
+            collection.count(query, function(err, total) {
+                collection.find(query, {
+                    skip: (page - 1) * 10,
+                    limit: 10
+                }).sort({
+                    time:-1
+                }).toArray(function(err, docs) {
+                        mongodb.close();
+                        if (err) {
+                            return callback(err);  // fail
+                        }
 
-                    docs.forEach(function(doc) {
-                        doc.post = markdown.toHTML(doc.post);
-                    })
+                        if (docs) {
+                            docs.forEach(function(doc) {
+                                doc.post = markdown.toHTML(doc.post);
+                            })
+                        }
 
-                    callback(null, docs); // success
-             });
+                        callback(null, docs, total); // success
+                    });
+
+            });
+
+
         });
     });
 }
