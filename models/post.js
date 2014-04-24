@@ -89,3 +89,58 @@ Post.getAll = function(username, callback) {
 }
 
 
+Post.getOne = function(username, day, title, callback) {
+     // Open database
+    mongodb.open(function(err, db) {
+        if (err) {
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            collection.findOne({
+                "username" : username,
+                "time.day": day,
+                "title": title
+
+            }, function(err, doc) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);
+                }
+
+                if (doc == null) {
+                    return callback(err);
+                }
+
+                // Parse markdown to html
+                doc.post = markdown.toHTML(doc.post);
+                callback(null, doc);
+            });
+        });
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
