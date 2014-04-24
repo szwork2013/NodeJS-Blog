@@ -41,7 +41,7 @@ router.get('/:username/:day/:title', function(req, res) {
         res.render('article', {
             title: req.params.title,
             post: post,
-            user: req.session.req,
+            user: req.session.user,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
         });

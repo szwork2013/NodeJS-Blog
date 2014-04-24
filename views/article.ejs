@@ -1,4 +1,11 @@
 <%- include header %>
+<p>
+  <% if(user && (user.username == post.username)) { %>
+  <span><a class="edit" href="/p/<%= post.username %>/<%= post.time.day %>/<%= post.title %>/edit">Edit</a></span>
+  <span><a class="edit" href="/p/<%= post.username %>/<%= post.time.day %>/<%= post.title %>/delete">Delete</a></span>
+  <% } %>
+
+</p>
 
 <p class="info">
   Author: <a href="/u/<%= post.username %>"><%= post.username %></a>
