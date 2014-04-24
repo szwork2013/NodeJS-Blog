@@ -1,5 +1,6 @@
 var mongodb = require('./db');
-markdown = require('markdown').markdown;
+var markdown = require('markdown').markdown;
+var Comment = require('../models/comment.js');
 
 function Post(username, title, post) {
     this.username = username;
@@ -26,7 +27,8 @@ Post.prototype.save = function(callback) {
         username: this.username,
         time: time,
         title: this.title,
-        post: this.post
+        post: this.post,
+        comments: []
     }
 
     mongodb.open(function(err, db) {
@@ -117,8 +119,16 @@ Post.getOne = function(username, day, title, callback) {
                     return callback(err);
                 }
 
-                // Parse markdown to html
-                doc.post = markdown.toHTML(doc.post);
+                // Parse markdown to html, check if doc exist, my be null
+                if (doc) {
+                    doc.post = markdown.toHTML(doc.post);
+                    if (doc.comments) {
+                        doc.comments.forEach(function(comment) {
+                            comment.content = markdown.toHTML(comment.content);
+                        });
+                    };
+                };
+
                 callback(null, doc);
             });
         });
