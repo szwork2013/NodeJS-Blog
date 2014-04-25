@@ -2,9 +2,10 @@ var mongodb = require('./db');
 var markdown = require('markdown').markdown;
 var Comment = require('../models/comment.js');
 
-function Post(username, title, post) {
+function Post(username, title, tags, post) {
     this.username = username;
     this.title = title;
+    this.tags = tags;
     this.post = post;
 }
 
@@ -27,6 +28,7 @@ Post.prototype.save = function(callback) {
         username: this.username,
         time: time,
         title: this.title,
+        tags: this.tags,
         post: this.post,
         comments: []
     }
@@ -274,6 +276,84 @@ Post.getArchieve = function(callback) {
         });
     });
 };
+
+
+Post.getTags = function(callback) {
+    mongodb.open(function(err, db) {
+        if (err) {
+            callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                callback(err);
+            }
+
+
+            // distince is used for get all value for given key
+            collection.distinct('tags', function(err, docs) {
+                mongodb.close();
+                if (err) {
+                    return callback(err);
+                }
+
+                 callback(null, docs);
+            });
+        });
+    });
+};
+
+
+Post.getTag = function(tag, callback) {
+    mongodb.open(function(err, db) {
+        if (err) {
+            return callback(err);
+        }
+
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
+
+            // find docs only contain given tag
+            collection.find({
+                "tags": tag
+            }, {
+                "username": 1,
+                "time": 1,
+                "title": 1
+            }).sort({
+                    time: -1
+            }).toArray(function(err, docs) {
+
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, docs);
+            });
+        });
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
