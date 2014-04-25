@@ -30,7 +30,8 @@ Post.prototype.save = function(callback) {
         title: this.title,
         tags: this.tags,
         post: this.post,
-        comments: []
+        comments: [],
+        pv: 0
     }
 
     mongodb.open(function(err, db) {
@@ -122,8 +123,9 @@ Post.getOne = function(username, day, title, callback) {
                 "title": title
 
             }, function(err, doc) {
-                mongodb.close();
+
                 if (err) {
+                    mongodb.close();
                     return callback(err);
                 }
 
@@ -133,6 +135,21 @@ Post.getOne = function(username, day, title, callback) {
 
                 // Parse markdown to html, check if doc exist, my be null
                 if (doc) {
+                    // 每访问1次, PV 值 + 1
+                    collection.update({
+                        "username" : username,
+                        "time.day": day,
+                        "title": title
+                    },{
+                        $inc: {"pv" : 1}        // $inc to control mongodb increase
+                    }, function(err) {
+                        mongodb.close();
+                        if (err) {
+                            return callback(err);
+                        }
+                    });
+
+
                     doc.post = markdown.toHTML(doc.post);
                     if (doc.comments) {
                         doc.comments.forEach(function(comment) {
