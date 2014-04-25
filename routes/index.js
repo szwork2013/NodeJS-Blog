@@ -199,7 +199,7 @@ router.get('/archive', function(req, res) {
             posts: posts,
             user: req.session.user,
             success: req.flash('success').toString(),
-            error: req.flash('error').toString
+            error: req.flash('error').toString()
         });
     });
 });

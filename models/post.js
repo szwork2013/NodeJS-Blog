@@ -33,6 +33,7 @@ Post.prototype.save = function(callback) {
         tags: this.tags,
         post: this.post,
         comments: [],
+        reprint_info: {},
         pv: 0
     }
 
@@ -131,9 +132,9 @@ Post.getOne = function(username, day, title, callback) {
                     return callback(err);
                 }
 
-                if (doc == null) {
-                    return callback(err);
-                }
+//                if (doc == null) {
+//                    return callback(err);
+//                }
 
                 // Parse markdown to html, check if doc exist, my be null
                 if (doc) {
@@ -393,8 +394,56 @@ Post.search = function(keyword, callback) {
     });
 };
 
+/*
+Post.reprint = function(reprint_from, reprint_to, callback) {
+    mongodb.open(function(err, db) {
+        if (err) {
+            return callback(err);
+        }
 
+        db.collection('posts', function(err, collection) {
+            if (err) {
+                mongodb.close();
+                return callback(err);
+            }
 
+            collection.findOne({
+                "username": reprint_from.username,
+                "time.day": reprint_from.day,
+                "title": reprint_from.title
+            }, function(err, doc) {
+                if (err) {
+                    mongodb.close();
+                    return callback(err);
+                }
+
+                var date = new Date();
+                var time = {
+                    date: date,
+                    year : date.getFullYear(),
+                    month : date.getFullYear() + "-" + (date.getMonth() + 1),
+                    day : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
+                    minute : date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
+                        date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+                }
+
+                delete doc.id; // remove original id
+
+                doc.username = reprint_to.name;
+                doc.head = reprint_to.head;
+                doc.time = time;
+                doc.title = (doc.title.search(/[RE]/) > -1) ? doc.title : "[RE] " +  doc.title;
+                doc.comments = [];
+                doc.reprint_info = {
+                    "reprint_from" : reprint_from
+                };
+                doc.pv = 0;
+
+            })
+        })
+    })
+}
+ */
 
 
 
