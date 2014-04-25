@@ -225,6 +225,16 @@ router.get('/search', function(req, res) {
 });
 
 
+router.get('/links', function(req, res) {
+    res.render('links', {
+        title: 'Links',
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+    });
+});
+
+
 module.exports = router;
 
 
