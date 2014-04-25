@@ -49,8 +49,6 @@ router.post('/reg', function(req, res) {
     var password = req.body.password;
     var password_re = req.body['repeat-password'];
     var email = req.body.email;
-    console.log("???");
-    console.log(req.body);
 
     if (password != password_re) {
         req.flash('error', 'Two password are not smae');
@@ -137,7 +135,7 @@ router.post('/post', checkLogin);
 router.post('/post', function(req, res) {
     var currentUser = req.session.user;
     var tags = [req.body.tag1, req.body.tag2, req.body.tag3]
-    var post = new Post(currentUser.username, req.body.title, tags, req.body.post);
+    var post = new Post(currentUser.username, currentUser.head, req.body.title, tags, req.body.post);
     post.save(function(err) {
         if (err) {
             req.flash('error', err);

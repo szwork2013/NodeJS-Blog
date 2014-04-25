@@ -5,6 +5,7 @@
   <h2>
     <a href="/u/<%= post.username %>/<%= post.time.day %>/<%= post.title%>"><%= post.title %></a>
   </h2>
+    <a href="/u/<%= post.username %>"><img src="<%= post.head %>" alt="" class="r_head"/></a>
 </p>
 
 <p class="info">
@@ -22,8 +23,14 @@
 </p>
 
 <p><%- post.post %></p>
-<p class="info">Read: <%= post.pv %> | Comments: <%= post.comments.length%></p>
+<p class="info">Read: <%= post.pv %> |
 
+  <% if (post.comments) { %>
+  Comments: <%= post.comments.length%>
+  <% } %>
+
+
+</p>
 <% }) %>
 
 

@@ -1,4 +1,5 @@
 var express = require('express');
+var crypto = require('crypto');
 
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
@@ -60,8 +61,13 @@ router.post('/:username/:day/:title', function(req, res) {
     var time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
         date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
 
+    var md5 = crypto.createHash('md5'),
+        emailMD5 = md5.update(req.body.email.toLowerCase()).digest('hex'),
+        head = "http://www.gravatar.com/avatar/" + emailMD5 + "?s=48"
+
     var comment = {
         username: req.body.username,
+        head: head,
         email: req.body.email,
         website: req.body.website,
         time: time,
