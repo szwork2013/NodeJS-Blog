@@ -43,9 +43,9 @@ User.prototype.save = function(callback) {
                 }
 
                 callback(null, user[0]);   // success!
-            })
-        })
-    })
+            });
+        });
+    });
 }
 
 
@@ -75,7 +75,5 @@ User.get = function(username, callback) {
             });
         });
     });
-
 }
-
 

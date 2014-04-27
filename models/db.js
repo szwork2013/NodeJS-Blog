@@ -6,5 +6,9 @@ var settings = require('../settings'),
 
 module.exports = new Db(
     settings.db,
-    new Server(settings.host, Connection.DEFAULT_PORT),
-    {safe: true});
+    new Server(
+        settings.host,
+        Connection.DEFAULT_PORT),
+        {
+            safe: true
+        });

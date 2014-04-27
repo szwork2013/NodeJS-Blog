@@ -74,7 +74,6 @@ router.post('/:username/:day/:title', function(req, res) {
         content: req.body.content
     };
 
-
     var newComment = new PostComment(req.params.username, req.params.day, req.params.title, comment);
     newComment.save(function(err) {
         if (err) {
@@ -84,12 +83,8 @@ router.post('/:username/:day/:title', function(req, res) {
 
         req.flash('success', 'Comment Successfully!');
         res.redirect('back');
-    })
-
-
-})
-
-
+    });
+});
 
 
 module.exports = router;

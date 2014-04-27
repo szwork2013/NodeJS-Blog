@@ -22,10 +22,8 @@ Comment.prototype.save = function(callback) {
             callback(err);
         }
 
-
         db.collection('posts', function(err, collection) {
             if (err) {
-
                 mongodb.close();
                 return callback(err);
             }
@@ -37,8 +35,6 @@ Comment.prototype.save = function(callback) {
             }, {
                 $push: {"comments" : comment}
             }, function(err) {
-
-
                 mongodb.close();
                 if (err) {
                     return callback(err);
@@ -49,14 +45,3 @@ Comment.prototype.save = function(callback) {
         });
     });
 };
-
-
-
-
-
-
-
-
-
-
-

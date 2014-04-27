@@ -29,7 +29,6 @@ router.get('/', function(req, res) {
             error: req.flash('error').toString()
         });
     });
-
 });
 
 router.get('/reg', checkNotLogin);
@@ -59,12 +58,11 @@ router.post('/reg', function(req, res) {
     var md5 = crypto.createHash('md5'),
         password = md5.update(req.body.password).digest('hex');
 
-   var newUser = new User({
+    var newUser = new User({
         username: username,
         password: password,
         email: email
-   });
-
+    });
 
     User.get(newUser.name, function(err, user) {
         if (user) {
@@ -82,7 +80,6 @@ router.post('/reg', function(req, res) {
             req.session.user = user;
             req.flash('success', 'Register successfully!');
             res.redirect('/');
-
         });
     });
 });
@@ -166,25 +163,21 @@ router.get('/upload', function(req, res) {
 
 router.post('upload', checkLogin);
 router.post('/upload', multipartMiddleware, function(req, res) {
-
     for(var i in req.files) {
         if (req.files[i].size == 0) {
             // use sync delete a file
             fs.unlinkSync(req.files[i].path);
-            console.log('Successfully removed');
 
         } else {
-//            console.log(req.files[i].name);
             var target_path = './public/images/' + req.files[i].name;
             // rename a file sync
             fs.renameSync(req.files[i].path, target_path);
-            console.log('Successfully renamed');
         }
     }
 
     req.flash('success', 'UPload successfully');
     res.redirect('/upload');
-})
+});
 
 
 router.get('/archive', function(req, res) {
@@ -252,5 +245,3 @@ function checkNotLogin(req, res, next) {
     }
     next();
 }
-
-

@@ -61,8 +61,6 @@ router.get('/:username/:day/:title/delete', function(req, res) {
 });
 
 
-
-
 // 这部分用4.0 的新的表达方式可以重构掉？
 function checkLogin(req, res, next) {
     if (!req.session.user) {

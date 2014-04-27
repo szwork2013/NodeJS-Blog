@@ -22,7 +22,6 @@ Post.prototype.save = function(callback) {
         day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
         minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
             date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-
     };
 
     var post = {
@@ -97,11 +96,8 @@ Post.getTen = function(username, page, callback) {
                         }
 
                         callback(null, docs, total); // success
-                    });
-
+                });
             });
-
-
         });
     });
 }
@@ -124,9 +120,7 @@ Post.getOne = function(username, day, title, callback) {
                 "username" : username,
                 "time.day": day,
                 "title": title
-
             }, function(err, doc) {
-
                 if (err) {
                     mongodb.close();
                     return callback(err);
@@ -152,14 +146,13 @@ Post.getOne = function(username, day, title, callback) {
                         }
                     });
 
-
                     doc.post = markdown.toHTML(doc.post);
                     if (doc.comments) {
                         doc.comments.forEach(function(comment) {
                             comment.content = markdown.toHTML(comment.content);
                         });
-                    };
-                };
+                    }
+                }
 
                 callback(null, doc);
             });
@@ -193,7 +186,6 @@ Post.edit = function(username, day, title, callback) {
                     return callback(err);
                 }
 
-
                 callback(null, doc);
             });
         });
@@ -226,11 +218,9 @@ Post.update = function(username, day, title, post, callback) {
                     return callback(err);
                 }
                 callback(null);
-            })
-
-        })
-
-    })
+            });
+        });
+    });
 }
 
 
@@ -261,9 +251,9 @@ Post.delete = function(username, day, title, callback) {
                 }
 
                 callback(null);
-            })
-        })
-    })
+            });
+        });
+    });
 }
 
 Post.getArchieve = function(callback) {
@@ -292,7 +282,7 @@ Post.getArchieve = function(callback) {
                     }
 
                     callback(null, docs);
-                });
+            });
         });
     });
 };
@@ -309,7 +299,6 @@ Post.getTags = function(callback) {
                 mongodb.close();
                 callback(err);
             }
-
 
             // distince is used for get all value for given key
             collection.distinct('tags', function(err, docs) {
