@@ -36,7 +36,7 @@ node_modules
 # .idea/dataSources.xml
 # .idea/sqlDataSources.xml
 # .idea/dynamic.xml
-
+.DS_Store
 ## File-based project format
 *.ipr
 *.iws

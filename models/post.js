@@ -89,11 +89,12 @@ Post.getTen = function(username, page, callback) {
                             return callback(err);  // fail
                         }
 
-                        if (docs) {
-                            docs.forEach(function(doc) {
-                                doc.post = markdown.toHTML(doc.post);
-                            })
-                        }
+                        // We use kindeditor instead
+//                        if (docs) {
+//                            docs.forEach(function(doc) {
+//                                doc.post = markdown.toHTML(doc.post);
+//                            })
+//                        }
 
                         callback(null, docs, total); // success
                 });
@@ -146,12 +147,13 @@ Post.getOne = function(username, day, title, callback) {
                         }
                     });
 
-                    doc.post = markdown.toHTML(doc.post);
-                    if (doc.comments) {
-                        doc.comments.forEach(function(comment) {
-                            comment.content = markdown.toHTML(comment.content);
-                        });
-                    }
+                    // We use kindEditor now
+//                    doc.post = markdown.toHTML(doc.post);
+//                    if (doc.comments) {
+//                        doc.comments.forEach(function(comment) {
+//                            comment.content = markdown.toHTML(comment.content);
+//                        });
+//                    }
                 }
 
                 callback(null, doc);
